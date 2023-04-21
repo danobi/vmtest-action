@@ -14,7 +14,7 @@ See [action.yml][1] for full manifest.
 
 ### Example usage
 
-```
+```yaml
 steps:
 - uses: actions/checkout@v3
 - name: Run vmtest
@@ -25,7 +25,7 @@ steps:
 
 ### Example workflow
 
-```
+```yaml
 name: vmtest
 
 on:
