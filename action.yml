@@ -1,6 +1,6 @@
-name: 'Container Action Template'
-description: 'Get started with Container actions'
-author: 'GitHub'
+name: 'vmtest'
+description: 'Programmatically run tests in a virtualized machine'
+author: 'danobi'
 inputs: 
   myInput:
     description: 'Input to use'
