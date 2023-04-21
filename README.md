@@ -17,8 +17,7 @@ See [action.yml][1] for full manifest.
 ```yaml
 steps:
 - uses: actions/checkout@v3
-- name: Run vmtest
-  uses: danobi/vmtest-action@master
+- uses: danobi/vmtest-action@master
   with:
     myInput: 'Mona the Octocat'
 ```
