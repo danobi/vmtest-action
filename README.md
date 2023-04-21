@@ -19,7 +19,9 @@ steps:
 - uses: actions/checkout@v3
 - uses: danobi/vmtest-action@master
   with:
-    myInput: 'Mona the Octocat'
+    name: '5.4 kernel'
+    kernel: './kernels/bzImage-5.15.0-1022-aws
+    command: "/bin/bash -c 'uname -r | grep -e aws$'"
 ```
 
 ### Example workflow
@@ -42,7 +44,9 @@ jobs:
     - name: Run vmtest
       uses: danobi/vmtest-action@master
       with:
-        myInput: 'Mona the Octocat'
+        name: '5.4 kernel'
+        kernel: './kernels/bzImage-5.15.0-1022-aws
+        command: "./main.sh"
 
     - name: Run main.sh
       run: |
