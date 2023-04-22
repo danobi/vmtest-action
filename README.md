@@ -9,24 +9,16 @@ See [action.yml][1] for full manifest.
 
 ### Inputs
 
+The following input parameters map 1:1 with `vmtest` [target fields][2].
+Please see the previous link for full documentation. But for reference,
+here are the available inputs again:
+
 * `name`
-    * Optional field.
-    * Name for vmtest target.
 * `image`
-    * Optional field.
-    * Path or URL to virtual machine image. Optional field, but one of `image` or `kernel` must be specified.
 * `uefi`
-    * Optional field.
-    * Whether to use UEFI boot or not.
 * `kernel`
-    * Optional field.
-    * Path or URL to kernel. Typically named `vmlinuz` or `bzImage`. Optional field, but one of `image` and `kernel` must be specified.
 * `kernel_args`
-    * Optional field.
-    * Additional kernel command line arguments to append to vmtest generated kernel arguments. `kernel` must be specified for this field to be effective.
 * `command`
-    * Required field.
-    * Command to run inside VM. The specified command must be an absolute path. Note that the specified command is not run inside a shell by default. If you want a shell, use /bin/bash -c "$SHELL_CMD_HERE".
 
 ### Example usage
 
@@ -71,3 +63,4 @@ jobs:
 
 [0]: https://github.com/danobi/vmtest
 [1]: ./action.yml
+[2]: https://github.com/danobi/vmtest#target
