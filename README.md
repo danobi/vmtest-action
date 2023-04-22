@@ -10,8 +10,8 @@ See [action.yml][1] for full manifest.
 ### Inputs
 
 The following input parameters map 1:1 with `vmtest` [target fields][2].
-Please see the previous link for full documentation. But for reference,
-here are the available inputs again:
+Please see the link for full documentation. But for reference, here are the
+available inputs again:
 
 * `name`
 * `image`
