@@ -28,7 +28,7 @@ steps:
 - uses: danobi/vmtest-action@master
   with:
     name: '5.4 kernel'
-    kernel: './kernels/bzImage-5.15.0-1022-aws
+    kernel: './kernels/bzImage-5.15.0-1022-aws'
     command: "/bin/bash -c 'uname -r | grep -e aws$'"
 ```
 
