@@ -42,4 +42,8 @@ async function main() {
     await runVmtest('./vmtest.toml');
 }
 
-module.exports = { checkOnUbuntu, materializeConfig, main };
+module.exports = {
+    checkOnUbuntu,
+    materializeConfig,
+    main
+};
