@@ -1,6 +1,5 @@
 const core = require('@actions/core');
 const fs = require('fs/promises');
-const github = require('@actions/github');
 
 // Check if the current runner is ubuntu. If not, throws an exception
 async function checkOnUbuntu(osRelease) {
@@ -43,4 +42,4 @@ async function main() {
     await runVmtest('./vmtest.toml');
 }
 
-module.exports = { checkOnUbuntu, materializeConfig };
+module.exports = { checkOnUbuntu, materializeConfig, main };
