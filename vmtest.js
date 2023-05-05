@@ -1,4 +1,5 @@
 const core = require('@actions/core');
+const exec = require('@actions/exec');
 const fs = require('fs/promises');
 
 // Check if the current runner is ubuntu. If not, throws an exception
@@ -24,8 +25,20 @@ async function checkOnUbuntu(osRelease) {
     throw new Error('This action only works on Ubuntu runners');
 }
 
+async function installVmtest() {
+    await exec.exec(`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y`);
+    await exec.exec('cargo install vmtest');
+}
+
+async function installPackages() {
+    await exec.exec('sudo apt-get update');
+    await exec.exec('sudo apt-get install -y qemu-system-x86-64 ovmf');
+}
+
 // Install required vmtest dependencies
-async function installDependencies() {}
+async function installDependencies() {
+    await Promise.all([installVmtest(), installPackages()]);
+}
 
 async function materializeConfig(args, configFile) {
     var lines = [];
@@ -50,8 +63,8 @@ async function materializeConfig(args, configFile) {
 }
 
 async function runVmtest(configFile) {
-    // TODO: remove (silencing lint)
     core.debug(`running vmtest with config file: ${configFile}`);
+    await exec.exec(`vmtest --config ${configFile}`);
 }
 
 async function main() {
@@ -63,11 +76,15 @@ async function main() {
         kernel_args: core.getInput('kernel_args'),
         command: core.getInput('command'),
     };
-
     core.debug(`args=${JSON.stringify(args)}`);
-    await checkOnUbuntu('/etc/os-release');
-    await installDependencies();
-    await materializeConfig(args, './vmtest.toml');
+
+    // Can run these in parallel
+    var check = checkOnUbuntu('/etc/os-release');
+    var install = installDependencies();
+    var materialize = materializeConfig(args, './vmtest.toml');
+    await Promise.all([check, install, materialize]);
+
+    // Once above tasks complete, we can run vmtest
     await runVmtest('./vmtest.toml');
 }
 
