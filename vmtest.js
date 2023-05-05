@@ -26,7 +26,7 @@ async function checkOnUbuntu(osRelease) {
 }
 
 async function installVmtest() {
-    await exec.exec(`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y`);
+    await exec.exec(`curl https://sh.rustup.rs | sh -s -- -y`);
     await exec.exec('cargo install vmtest');
 }
 
