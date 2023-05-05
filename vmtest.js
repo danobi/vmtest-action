@@ -35,7 +35,7 @@ async function main() {
         command: core.getInput('command'),
     };
 
-    core.debug(`args=${args}`);
+    core.debug(`args=${JSON.stringify(args)}`);
     await checkOnUbuntu('/etc/os-release');
     await installDependencies();
     await materializeConfig(args, './vmtest.toml');
