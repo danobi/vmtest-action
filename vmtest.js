@@ -43,7 +43,10 @@ async function materializeConfig(args, configFile) {
     await fs.writeFile(configFile, contents);
 }
 
-async function runVmtest(configFile) {}
+async function runVmtest(configFile) {
+    // TODO: remove (silencing lint)
+    core.debug(`running vmtest with config file: ${configFile}`);
+}
 
 async function main() {
     var args = {
