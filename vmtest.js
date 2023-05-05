@@ -76,6 +76,9 @@ async function main() {
         kernel_args: core.getInput('kernel_args'),
         command: core.getInput('command'),
     };
+
+    // Start a collapsable log group
+    core.startGroup("Install vmtest");
     core.debug(`args=${JSON.stringify(args)}`);
 
     // Can run these in parallel
@@ -83,6 +86,9 @@ async function main() {
     var install = installDependencies();
     var materialize = materializeConfig(args, './vmtest.toml');
     await Promise.all([check, install, materialize]);
+
+    // End log group
+    core.endGroup();
 
     // Once above tasks complete, we can run vmtest
     await runVmtest('./vmtest.toml');
