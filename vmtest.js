@@ -32,7 +32,7 @@ async function installVmtest() {
 
 async function installPackages() {
     await exec.exec('sudo apt-get update');
-    await exec.exec('sudo apt-get install -y qemu-system-x86-64 ovmf');
+    await exec.exec('sudo apt-get install -y qemu-system-x86-64 qemu-guest-agent ovmf');
 }
 
 // Install required vmtest dependencies
