@@ -9,7 +9,13 @@ async function checkOnUbuntu(osRelease) {
     const lines = data.toString().split('\n');
 
     for (var i = 0; i < lines.length; i++) {
+        if (lines[i].length == 0) {
+            continue;
+        }
         var parts = lines[i].split('=');
+        if (parts.length != 2) {
+            throw new Error(`Invalid line in ${osRelease}: ${lines[i]}`);
+        }
         if (parts[0] == 'ID' && parts[1] == 'ubuntu') {
             return;
         }
