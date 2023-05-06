@@ -1,4 +1,4 @@
-name: 'vmtest'
+name: 'vmtest-action'
 description: 'Programmatically run tests in a virtualized machine'
 author: 'danobi'
 inputs: 
