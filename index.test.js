@@ -2,6 +2,42 @@ const fs = require('fs');
 const tmp = require('tmp');
 const vmtest = require('./vmtest');
 
+test('validate good args', async () => {
+    const args = {
+        kernel: './bzimage',
+        kernel_url: '',
+        kernel_args: 'console=ttyS0',
+        image: '',
+        image_url: '',
+        command: '/bin/echo hello',
+    };
+    expect(async () => {
+        await vmtest.validateArgs(args)
+    }).not.toThrow();
+});
+
+test('validate bad args', async () => {
+    const badKernelArgs = {
+        kernel: './bzimage',
+        kernel_url: 'https://example.com/bzimage',
+        kernel_args: 'console=ttyS0',
+        image: '',
+        image_url: '',
+        command: '/bin/echo hello',
+    };
+    await expect(vmtest.validateArgs(badKernelArgs)).rejects.toThrow('Cannot specify both');
+
+    const badImageArgs = {
+        kernel: '',
+        kernel_url: '',
+        kernel_args: '',
+        image: './image',
+        image_url: 'https://example.com/image',
+        command: '/bin/echo hello',
+    };
+    await expect(vmtest.validateArgs(badImageArgs)).rejects.toThrow('Cannot specify both');
+});
+
 test('test os-release ubuntu22', async () => {
     const osRelease = tmp.fileSync();
     const osReleaseContents = 'ID=ubuntu\n' +

@@ -2,6 +2,19 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const fs = require('fs/promises');
 
+// Validate input parameters. Throws an exception on error.
+//
+// Note we only validate vmtest-action provided parameters. We leave
+// the remaining validation to vmtest itself.
+async function validateArgs(args) {
+    if (args.kernel.length && args.kernel_url.length) {
+        throw new Error('Cannot specify both kernel and kernel_url');
+    }
+    if (args.image.length && args.image_url.length) {
+        throw new Error('Cannot specify both image and image_url');
+    }
+}
+
 // Check if the current runner is ubuntu. If not, throws an exception
 async function checkOnUbuntu(osRelease) {
     const data = await fs.readFile(osRelease, {
@@ -71,15 +84,19 @@ async function main() {
     var args = {
         name: core.getInput('name'),
         image: core.getInput('image'),
+        image_url: core.getInput('image_url'),
         uefi: core.getInput('uefi'),
         kernel: core.getInput('kernel'),
+        kernel_url: core.getInput('kernel_url'),
         kernel_args: core.getInput('kernel_args'),
         command: core.getInput('command'),
     };
 
     // Start a collapsable log group
     core.startGroup("Install vmtest");
+
     core.debug(`args=${JSON.stringify(args)}`);
+    await validateArgs(args);
 
     // Can run these in parallel
     var check = checkOnUbuntu('/etc/os-release');
@@ -95,6 +112,7 @@ async function main() {
 }
 
 module.exports = {
+    validateArgs,
     checkOnUbuntu,
     materializeConfig,
     main

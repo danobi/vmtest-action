@@ -7,7 +7,11 @@ inputs:
     default: 'vmtest-action target'
     required: false
   image:
-    description: 'Path or URL to virtual machine image. Optional field, but one of `image` or `kernel` must be specified.'
+    description: 'Path to virtual machine image. Optional field, but one of `image` or `kernel` must be specified.'
+    default: ''
+    required: false
+  image_url:
+    description: 'URL to virtual machine image. Optional field, but one of `image` or `kernel` must be specified. `image` may not be specified if `image_url` is provided.
     default: ''
     required: false
   uefi:
@@ -15,7 +19,11 @@ inputs:
     default: 'false'
     required: false
   kernel:
-    description: 'Path or URL to kernel. Typically named `vmlinuz` or `bzImage`. Optional field, but one of `image` and `kernel` must be specified.'
+    description: 'Path to kernel. Typically named `vmlinuz` or `bzImage`. Optional field, but one of `image` and `kernel` must be specified.'
+    default: ''
+    required: false
+  kernel_url:
+    description: 'URL to kernel. Optional field, but one of `image` or `kernel` must be specified. `kernel` may not be specified if `kernel_url` is provided.
     default: ''
     required: false
   kernel_args:

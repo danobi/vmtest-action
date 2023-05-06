@@ -25,6 +25,16 @@ available inputs again:
 * `kernel_args`
 * `command`
 
+In contrast to the above, the below input parameters only exist in
+`vmtest-action` and are for convenience:
+
+* `image_url`
+  * Virtual machine image to download and use.
+  * Cannot be used in conjunction with `image` parameter.
+* `kernel_url`
+  * Kernel to download and use.
+  * Cannot be used in conjunction with `kernel` parameter.
+
 ### Example usage
 
 ```yaml
