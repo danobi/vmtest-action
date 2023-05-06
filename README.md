@@ -3,6 +3,11 @@
 This action wraps [vmtest][0] with a standard Github Actions interface to make
 it easy to plug `vmtest` into your CI.
 
+This action is designed to easily "drop in" to your existing CI workflows by
+leveraging `vmtest`'s ability to map the host userspace into the guest VM. In
+other words, any dependency wrangling or setup you do on the root host can be
+used inside the VM without additional configuration.
+
 ## Usage
 
 See [action.yml][1] for full manifest.
@@ -49,11 +54,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Run main.sh
+    - name: Run main.sh on "default" kernel
       run: |
         ./main.sh
 
-    - name: Run main.sh in a different kernel
+    - name: Run main.sh in specified kernel but with same userspace
       uses: danobi/vmtest-action@master
       with:
         name: '5.4 kernel'
