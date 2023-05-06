@@ -49,16 +49,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Run vmtest
+    - name: Run main.sh
+      run: |
+        ./main.sh
+
+    - name: Run main.sh in a different kernel
       uses: danobi/vmtest-action@master
       with:
         name: '5.4 kernel'
         kernel: './kernels/bzImage-5.15.0-1022-aws
-        command: "./main.sh"
-
-    - name: Run main.sh
-      run: |
-        ./main.sh
+        command: ${{ github.workspace }}./main.sh
 ```
 
 [0]: https://github.com/danobi/vmtest
