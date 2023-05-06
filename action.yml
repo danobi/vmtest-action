@@ -11,7 +11,7 @@ inputs:
     default: ''
     required: false
   image_url:
-    description: 'URL to virtual machine image. Optional field, but one of `image` or `kernel` must be specified. `image` may not be specified if `image_url` is provided.
+    description: 'URL to virtual machine image. Optional field, but one of `image` or `kernel` must be specified. `image` may not be specified if `image_url` is provided.'
     default: ''
     required: false
   uefi:
@@ -23,7 +23,7 @@ inputs:
     default: ''
     required: false
   kernel_url:
-    description: 'URL to kernel. Optional field, but one of `image` or `kernel` must be specified. `kernel` may not be specified if `kernel_url` is provided.
+    description: 'URL to kernel. Optional field, but one of `image` or `kernel` must be specified. `kernel` may not be specified if `kernel_url` is provided.'
     default: ''
     required: false
   kernel_args:
