@@ -103,18 +103,20 @@ test('test invalid os-release', async () => {
     await expect(vmtest.checkOnUbuntu(osRelease.name)).rejects.toThrow("Invalid line in");
 });
 
-test('validate image args', async () => {
+test('materialize image args', async () => {
     const args = {
         name: 'test',
         image: './foo.img',
+        image_url: '',
         uefi: 'true',
         kernel: '',
+        kernel_url: '',
         kernel_args: '',
         command: '/bin/true',
     };
 
     const config = tmp.fileSync();
-    await vmtest.materializeConfig(args, config.name);
+    await vmtest.materializeConfig(args, config.name, null);
     const contents = fs.readFileSync(config.name, 'utf8');
     const expected = '[[target]]\n' +
         'name = "test"\n' +
@@ -124,22 +126,70 @@ test('validate image args', async () => {
     expect(contents).toBe(expected);
 });
 
-test('validate kernel args', async () => {
+test('materialize downloaded image args', async () => {
     const args = {
         name: 'test',
         image: '',
+        image_url: 'https://example.com/image',
+        uefi: 'true',
+        kernel: '',
+        kernel_url: '',
+        kernel_args: '',
+        command: '/bin/true',
+    };
+
+    const config = tmp.fileSync();
+    await vmtest.materializeConfig(args, config.name, '/tmp/image');
+    const contents = fs.readFileSync(config.name, 'utf8');
+    const expected = '[[target]]\n' +
+        'name = "test"\n' +
+        'image = "/tmp/image"\n' +
+        'uefi = true\n' +
+        'command = "/bin/true"';
+    expect(contents).toBe(expected);
+});
+
+test('materialize kernel args', async () => {
+    const args = {
+        name: 'test',
+        image: '',
+        image_url: '',
         uefi: 'false',
         kernel: './bzImage-6.0',
+        kernel_url: '',
         kernel_args: 'console=ttyS0',
         command: '/bin/true',
     };
 
     const config = tmp.fileSync();
-    await vmtest.materializeConfig(args, config.name);
+    await vmtest.materializeConfig(args, config.name, null);
     const contents = fs.readFileSync(config.name, 'utf8');
     const expected = '[[target]]\n' +
         'name = "test"\n' +
         'kernel = "./bzImage-6.0"\n' +
+        'kernel_args = "console=ttyS0"\n' +
+        'command = "/bin/true"';
+    expect(contents).toBe(expected);
+});
+
+test('materialize downloaded kernel args', async () => {
+    const args = {
+        name: 'test',
+        image: '',
+        image_url: '',
+        uefi: 'false',
+        kernel: '',
+        kernel_url: 'https://example.com/bzImage-6.0',
+        kernel_args: 'console=ttyS0',
+        command: '/bin/true',
+    };
+
+    const config = tmp.fileSync();
+    await vmtest.materializeConfig(args, config.name, '/tmp/bzImage-6.0');
+    const contents = fs.readFileSync(config.name, 'utf8');
+    const expected = '[[target]]\n' +
+        'name = "test"\n' +
+        'kernel = "/tmp/bzImage-6.0"\n' +
         'kernel_args = "console=ttyS0"\n' +
         'command = "/bin/true"';
     expect(contents).toBe(expected);

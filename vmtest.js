@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
+const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
 
 // Validate input parameters. Throws an exception on error.
@@ -53,18 +54,22 @@ async function installDependencies() {
     await Promise.all([installVmtest(), installPackages()]);
 }
 
-async function materializeConfig(args, configFile) {
+async function materializeConfig(args, configFile, downloadedAssetPath) {
     var lines = [];
     lines.push('[[target]]');
     lines.push(`name = "${args.name}"`);
     if (args.image.length) {
         lines.push(`image = "${args.image}"`);
+    } else if (args.image_url.length) {
+        lines.push(`image = "${downloadedAssetPath}"`);
     }
     if (args.uefi.toLowerCase() == 'true') {
         lines.push('uefi = true');
     }
     if (args.kernel.length) {
         lines.push(`kernel = "${args.kernel}"`);
+    } else if (args.kernel_url.length) {
+        lines.push(`kernel = "${downloadedAssetPath}"`);
     }
     if (args.kernel_args.length) {
         lines.push(`kernel_args = "${args.kernel_args}"`);
@@ -73,6 +78,18 @@ async function materializeConfig(args, configFile) {
 
     var contents = lines.join('\n');
     await fs.writeFile(configFile, contents);
+}
+
+// Download image/kernel asset if necessary and then materialize vmtest config
+async function generateConfig(args, configFile) {
+    var downloadPath = null;
+    if (args.image_url.length) {
+        downloadPath = await tc.downloadTool(args.image_url);
+    } else if (args.kernel_url.length) {
+        downloadPath = await tc.downloadTool(args.kernel_url);
+    }
+
+    await materializeConfig(args, configFile, downloadPath);
 }
 
 async function runVmtest(configFile) {
@@ -101,8 +118,8 @@ async function main() {
     // Can run these in parallel
     var check = checkOnUbuntu('/etc/os-release');
     var install = installDependencies();
-    var materialize = materializeConfig(args, './vmtest.toml');
-    await Promise.all([check, install, materialize]);
+    var generate = generateConfig(args, './vmtest.toml');
+    await Promise.all([check, install, generate]);
 
     // End log group
     core.endGroup();
