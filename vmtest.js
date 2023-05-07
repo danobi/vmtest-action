@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
+const which = require('which');
 
 // Validate input parameters. Throws an exception on error.
 //
@@ -40,7 +41,15 @@ async function checkOnUbuntu(osRelease) {
 }
 
 async function installVmtest() {
-    await exec.exec(`bash -c "curl https://sh.rustup.rs -s | sh -s -- -y"`);
+    // Pretty clowny way of avoiding clobbering an existing rust install.
+    // We don't want to clobber specific toolchains the user workflow might
+    // have installed. It is, however, unfortunate for us b/c we lose control
+    // over how vmtest is built.
+    const cargo = await which('cargo', { nothrow: true });
+    if (!cargo) {
+      await exec.exec(`bash -c "curl https://sh.rustup.rs -s | sh -s -- -y"`);
+    }
+
     await exec.exec('cargo install vmtest');
 }
 
