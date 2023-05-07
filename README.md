@@ -35,6 +35,12 @@ In contrast to the above, the below input parameters only exist in
   * Kernel to download and use.
   * Cannot be used in conjunction with `kernel` parameter.
 
+
+### Example project
+
+This repository shows off a simple but powerful example:
+https://github.com/danobi/vmtest-action-demo
+
 ### Example usage
 
 ```yaml
