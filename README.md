@@ -48,7 +48,6 @@ steps:
 - uses: actions/checkout@v3
 - uses: danobi/vmtest-action@master
   with:
-    name: '5.4 kernel'
     kernel: './kernels/bzImage-5.15.0-1022-aws'
     command: "/bin/bash -c 'uname -r | grep -e aws$'"
 ```
@@ -77,7 +76,6 @@ jobs:
     - name: Run main.sh in specified kernel but with same userspace
       uses: danobi/vmtest-action@master
       with:
-        name: '6.2 kernel hosted online'
         kernel_url: https://github.com/danobi/vmtest/releases/download/test_assets/bzImage-v6.2
         command: ${{ github.workspace }}./main.sh
 ```
