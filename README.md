@@ -76,7 +76,7 @@ jobs:
     - name: Run main.sh in specified kernel but with same userspace
       uses: danobi/vmtest-action@master
       with:
-        kernel_url: https://github.com/danobi/vmtest/releases/download/test_assets/bzImage-v6.2
+        kernel_url: https://github.com/danobi/vmtest/releases/download/test_assets/bzImage-v6.2-empty
         command: ${{ github.workspace }}./main.sh
 ```
 
