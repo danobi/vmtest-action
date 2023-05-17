@@ -4,6 +4,10 @@ const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
 const which = require('which');
 
+// Pin a specific minor version so user always gets a close enough thing.
+// Prefer minor so bug fixes can be picked up.
+const vmtestVersion = '0.5';
+
 // Validate input parameters. Throws an exception on error.
 //
 // Note we only validate vmtest-action provided parameters. We leave
@@ -50,7 +54,7 @@ async function installVmtest() {
       await exec.exec(`bash -c "curl https://sh.rustup.rs -s | sh -s -- -y"`);
     }
 
-    await exec.exec('cargo install vmtest');
+    await exec.exec(`cargo install vmtest --version ${vmtestVersion}`);
 }
 
 async function installPackages() {
