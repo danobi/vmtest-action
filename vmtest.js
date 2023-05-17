@@ -83,7 +83,13 @@ async function materializeConfig(args, configFile, downloadedAssetPath) {
     if (args.kernel_args.length) {
         lines.push(`kernel_args = "${args.kernel_args}"`);
     }
-    lines.push(`command = "${args.command}"`);
+    // Triple-quoting the command here is necessary to avoid any parsing
+    // or escaping issues. We don't want the user command to accidentally
+    // terminate our string. We also don't want anything to be accidentally
+    // escaped.
+    //
+    // See: https://toml.io/en/v0.3.0#string
+    lines.push(`command = '''${args.command}'''`);
 
     var contents = lines.join('\n');
     await fs.writeFile(configFile, contents);

@@ -122,7 +122,7 @@ test('materialize image args', async () => {
         'name = "test"\n' +
         'image = "./foo.img"\n' +
         'uefi = true\n' +
-        'command = "/bin/true"';
+        `command = '''/bin/true'''`;
     expect(contents).toBe(expected);
 });
 
@@ -145,7 +145,7 @@ test('materialize downloaded image args', async () => {
         'name = "test"\n' +
         'image = "/tmp/image"\n' +
         'uefi = true\n' +
-        'command = "/bin/true"';
+        `command = '''/bin/true'''`;
     expect(contents).toBe(expected);
 });
 
@@ -168,7 +168,7 @@ test('materialize kernel args', async () => {
         'name = "test"\n' +
         'kernel = "./bzImage-6.0"\n' +
         'kernel_args = "console=ttyS0"\n' +
-        'command = "/bin/true"';
+        `command = '''/bin/true'''`;
     expect(contents).toBe(expected);
 });
 
@@ -191,6 +191,6 @@ test('materialize downloaded kernel args', async () => {
         'name = "test"\n' +
         'kernel = "/tmp/bzImage-6.0"\n' +
         'kernel_args = "console=ttyS0"\n' +
-        'command = "/bin/true"';
+        `command = '''/bin/true'''`;
     expect(contents).toBe(expected);
 });
