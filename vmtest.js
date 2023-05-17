@@ -4,9 +4,9 @@ const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
 const which = require('which');
 
-// Pin a specific minor version so user always gets a close enough thing.
-// Prefer minor so bug fixes can be picked up.
-const vmtestVersion = '0.5';
+// Pin exact vmtest version so user always get the same thing no matter
+// when the action is used.
+const vmtestVersion = '0.5.0';
 
 // Validate input parameters. Throws an exception on error.
 //
