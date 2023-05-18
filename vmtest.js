@@ -1,12 +1,12 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
+const io = require('@actions/io');
 const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
-const which = require('which');
 
 // Pin exact vmtest version so user always get the same thing no matter
 // when the action is used.
-const vmtestVersion = '0.5.0';
+const vmtestVersion = '0.5.4';
 
 // Validate input parameters. Throws an exception on error.
 //
@@ -44,17 +44,11 @@ async function checkOnUbuntu(osRelease) {
     throw new Error('This action only works on Ubuntu runners');
 }
 
+// Install staticically linked vmtest binary
 async function installVmtest() {
-    // Pretty clowny way of avoiding clobbering an existing rust install.
-    // We don't want to clobber specific toolchains the user workflow might
-    // have installed. It is, however, unfortunate for us b/c we lose control
-    // over how vmtest is built.
-    const cargo = await which('cargo', { nothrow: true });
-    if (!cargo) {
-      await exec.exec(`bash -c "curl https://sh.rustup.rs -s | sh -s -- -y"`);
-    }
-
-    await exec.exec(`cargo install vmtest --version ${vmtestVersion}`);
+    const downloadPath = await tc.downloadTool(`https://github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-amd64`);
+    await fs.chmod(downloadPath, '755');
+    await io.cp(downloadPath, '/usr/local/bin/vmtest');
 }
 
 async function installPackages() {
