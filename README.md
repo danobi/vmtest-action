@@ -8,6 +8,9 @@ leveraging `vmtest`'s ability to map the host userspace into the guest VM. In
 other words, any dependency wrangling or setup you do on the root host can be
 used inside the VM without additional configuration.
 
+Please be aware that `vmtest-action` performance may be degraded unless your
+job is running on a large GHA runner. See [vmtest's FAQ][3] for more details.
+
 ## Usage
 
 See [action.yml][1] for full manifest.
@@ -83,3 +86,4 @@ jobs:
 [0]: https://github.com/danobi/vmtest
 [1]: ./action.yml
 [2]: https://github.com/danobi/vmtest#target
+[3]: https://github.com/danobi/vmtest/blob/master/docs/faqs.md#why-is-vmtest-slow-in-github-actions
