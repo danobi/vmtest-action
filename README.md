@@ -9,7 +9,8 @@ other words, any dependency wrangling or setup you do on the root host can be
 used inside the VM without additional configuration.
 
 Please be aware that `vmtest-action` performance may be degraded unless your
-job is running on a large GHA runner. See [vmtest's FAQ][3] for more details.
+job is running on a large or self-hosted GHA runner. See [vmtest's FAQ][3] for
+more details.
 
 ## Usage
 
