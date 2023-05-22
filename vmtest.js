@@ -6,7 +6,7 @@ const fs = require('fs/promises');
 
 // Pin exact vmtest version so user always get the same thing no matter
 // when the action is used.
-const vmtestVersion = '0.5.4';
+const vmtestVersion = '0.5.5';
 
 // Validate input parameters. Throws an exception on error.
 //
