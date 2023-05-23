@@ -44,6 +44,15 @@ async function checkOnUbuntu(osRelease) {
     throw new Error('This action only works on Ubuntu runners');
 }
 
+// Configure KVM to be usable from this job.
+//
+// See: https://github.blog/changelog/2023-02-23-hardware-accelerated-android-virtualization-on-actions-windows-and-linux-larger-hosted-runners/
+async function configureKvm() {
+    await exec.exec(`echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules`);
+    await exec.exec('sudo udevadm control --reload-rules')
+    await exec.exec('sudo udevadm trigger --name-match=kvm')
+}
+
 // Install staticically linked vmtest binary
 async function installVmtest() {
     const downloadPath = await tc.downloadTool(`https://github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-amd64`);
@@ -130,9 +139,10 @@ async function main() {
 
     // Can run these in parallel
     var check = checkOnUbuntu('/etc/os-release');
+    var configKvm = configureKvm();
     var install = installDependencies();
     var generate = generateConfig(args, './vmtest.toml');
-    await Promise.all([check, install, generate]);
+    await Promise.all([check, configKvm, install, generate]);
 
     // End log group
     core.endGroup();
