@@ -55,7 +55,8 @@ async function configureKvm() {
 
 // Install staticically linked vmtest binary
 async function installVmtest() {
-    const downloadPath = await tc.downloadTool(`https://github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-amd64`);
+    const downloadPath = await tc.downloadTool(`
+            https: //github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-amd64`);
     await fs.chmod(downloadPath, '755');
     await io.cp(downloadPath, '/usr/local/bin/vmtest');
 }
