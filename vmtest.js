@@ -3,6 +3,7 @@ const exec = require('@actions/exec');
 const io = require('@actions/io');
 const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
+const fsSync = require('fs');
 
 // Pin exact vmtest version so user always get the same thing no matter
 // when the action is used.
@@ -48,6 +49,11 @@ async function checkOnUbuntu(osRelease) {
 //
 // See: https://github.blog/changelog/2023-02-23-hardware-accelerated-android-virtualization-on-actions-windows-and-linux-larger-hosted-runners/
 async function configureKvm() {
+    // Only try to configure KVM on host with KVM available
+    if (!fsSync.existsSync('/dev/kvm')) {
+        return;
+    }
+
     await exec.exec(
         '/bin/bash',
         ['-c', `echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules`],
