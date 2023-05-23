@@ -48,7 +48,10 @@ async function checkOnUbuntu(osRelease) {
 //
 // See: https://github.blog/changelog/2023-02-23-hardware-accelerated-android-virtualization-on-actions-windows-and-linux-larger-hosted-runners/
 async function configureKvm() {
-    await exec.exec(`echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules`);
+    await exec.exec(
+        '/bin/bash',
+        ['-c', `echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules`],
+    );
     await exec.exec('sudo udevadm control --reload-rules')
     await exec.exec('sudo udevadm trigger --name-match=kvm')
 }
