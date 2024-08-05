@@ -7,7 +7,7 @@ const fsSync = require('fs');
 
 // Pin exact vmtest version so user always get the same thing no matter
 // when the action is used.
-const vmtestVersion = '0.5.7';
+const vmtestVersion = '0.12.0';
 
 // Validate input parameters. Throws an exception on error.
 //
@@ -64,7 +64,7 @@ async function configureKvm() {
 
 // Install staticically linked vmtest binary
 async function installVmtest() {
-    const downloadPath = await tc.downloadTool(`https://github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-amd64`);
+    const downloadPath = await tc.downloadTool(`https://github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-x86_64`);
     await fs.chmod(downloadPath, '755');
     await io.cp(downloadPath, '/usr/local/bin/vmtest');
 }
