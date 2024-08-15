@@ -1,0 +1,10 @@
+# A dummy Cargo project file enabling semi-automated vmtest version
+# management via Dependabot.
+
+[package]
+name = "vmtest-version"
+
+[dependencies]
+# This file is parsed ghetto-style, assuming the `vmtest` version being
+# located on the last line and it using <major>.<minor>.<patch> syntax.
+vmtest = "0.12.0"
