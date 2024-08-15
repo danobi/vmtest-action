@@ -4,10 +4,7 @@ const io = require('@actions/io');
 const tc = require('@actions/tool-cache');
 const fs = require('fs/promises');
 const fsSync = require('fs');
-
-// Pin exact vmtest version so user always get the same thing no matter
-// when the action is used.
-const vmtestVersion = '0.12.0';
+const path = require('path');
 
 // Validate input parameters. Throws an exception on error.
 //
@@ -64,6 +61,16 @@ async function configureKvm() {
 
 // Install staticically linked vmtest binary
 async function installVmtest() {
+    // We infer the vmtest version to install from the Cargo manifest,
+    // which is Dependabot managed.
+    const manifestPath = path.join(__dirname, 'Cargo.toml');
+    const data = await fs.readFile(manifestPath, {
+        encoding: 'utf8'
+    });
+    const lines = data.trim().split('\n');
+    const lastLine = lines[lines.length - 1].trim();
+    const vmtestVersion = lastLine.split('=')[1].trim().replace(/"/g, '');
+
     const downloadPath = await tc.downloadTool(`https://github.com/danobi/vmtest/releases/download/v${vmtestVersion}/vmtest-x86_64`);
     await fs.chmod(downloadPath, '755');
     await io.cp(downloadPath, '/usr/local/bin/vmtest');
