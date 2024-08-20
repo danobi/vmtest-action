@@ -7,4 +7,4 @@ name = "vmtest-version"
 [dependencies]
 # This file is parsed ghetto-style, assuming the `vmtest` version being
 # located on the last line and it using <major>.<minor>.<patch> syntax.
-vmtest = "0.13.0"
+vmtest = "0.14.0"
